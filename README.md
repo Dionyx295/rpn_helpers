@@ -10,7 +10,7 @@ Region Proposal Network use bounding boxes, but that data i had was for segmenta
 The directory containing the images should be given directly in the code. (for each script i used absolute link)
 Once the bbox_dir is created, it shoulde be copied in the corresponding image directory.
 
-
+```
 img_dir
 --bbox
 ----img1.json
@@ -19,6 +19,7 @@ img_dir
 --img1.png
 --img2.png
 --...
+```
 
 ## verif_bbox.py
 A json file can't be easly visualized, so this script take in input a mask directory and an image directory and plot the original image with drawn bbox next to the corresponding mask (for each image). Drawn bbox are coming from the bbox directory in the image directory (not the mask directory). Again, each path is absolute and have to be modified directly in the code.
