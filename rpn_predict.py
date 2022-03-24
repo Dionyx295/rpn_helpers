@@ -132,7 +132,7 @@ def get_anchor_list(img_w,img_h,w_feature_map,h_feature_map):
     # generate all the ordered pair of x and y center
     
     # to achive this, we will use meshgrid and reshape it
-    center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='xy')).T.reshape(-1,2)
+    center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='ij')).T.reshape(-1,2)
     
     # visualizing the anchor positions
     """
@@ -208,14 +208,14 @@ def get_anchor_list(img_w,img_h,w_feature_map,h_feature_map):
     """
     return anchor_list
 
-folder_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
+folder_path="data\\test\\"#"C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
 
 json_path = os.path.join(folder_path,"bbox")
 
 
-img_name='LRM_tot_clem_120.tif'
-model_name="rpn_120_nice_charb_all.h5"
-bbox_conf_threshold=0.96
+img_name='LRM_tot_clem_203.tif'
+model_name=".\\model\\rpn_model.h5"#"rpn_10im_800x800_40e_nice.h5"
+bbox_conf_threshold=0.95
 
 json_name=img_name.split('.')[0]+".json"
 

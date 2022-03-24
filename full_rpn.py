@@ -125,7 +125,7 @@ def IOU(box1, box2):
     
     return iou
 
-def sample_anchors_pre(df, n_samples= 512, neg_ratio= 0.5):
+def sample_anchors_pre(df, n_samples= 1024, neg_ratio= 0.5):
     """
     Sample total of n samples across both the class (background and foreground),
     If one of the class have less samples than n/2, we will sample from majority class to make up for short.
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     #%% Load the image 
     
     #img_name='mnt_solidar_gapclosed.sdat_101.tif'
-    img_name="LRM_tot_clem_7.tif"
+    img_name="LRM_tot_clem_202.tif"
     json_name=img_name.replace('.tif',".json")
     img = io.imread(os.path.join(folder_path, img_name))
     img_for_plt = np.copy(img)
@@ -292,7 +292,7 @@ if __name__ == '__main__':
     # generate all the ordered pair of x and y center
     
     # to achive this, we will use meshgrid and reshape it
-    center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='xy')).T.reshape(-1,2)
+    center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='ij')).T.reshape(-1,2)
     
     
     # visualizing the anchor positions
@@ -307,7 +307,7 @@ if __name__ == '__main__':
     al = []
     # aspect ratio = width/ height
     anchor_ratio_list = [1] # width = height (square)
-    anchor_scale_list = [60] # width of each anchor box
+    anchor_scale_list = [30] # width of each anchor box
     
     # total possible anchors 
     n_anchors = n_anchor_pos * len(anchor_ratio_list) * len(anchor_scale_list)
@@ -531,6 +531,7 @@ if __name__ == '__main__':
     conv1 = Conv2D(512,
                    kernel_size= 3,
                    padding= "same",
+                   name="conv1",
                    kernel_initializer=initializers.RandomNormal(stddev=0.01),
                    bias_initializer=initializers.Zeros())(input_) # (kw * iw + 2*padding_w / s_w) + 1
     
@@ -573,6 +574,13 @@ if __name__ == '__main__':
     
     # get the offset and objectiveness score
     anchor_deltas, objectiveness_score = RPN.predict(feature_maps)
+    
+    first_conv=RPN.get_layer("conv1")
+    obj_conv=RPN.get_layer("objectivess_score")
+    x1=first_conv(feature_maps)
+    x2=obj_conv(x1)
+    plt.imshow(x2[0,:,:,0])
+    plt.show()
     
     
     # shape both predictions
@@ -637,7 +645,7 @@ if __name__ == '__main__':
     for i, bbox in enumerate(bbox_list):
         cv2.rectangle(img_, (bbox[0], bbox[1]), (bbox[2], bbox[3]), color=(0, 255, 0), thickness=3)
     
-    for i in range(0, 5):  # 5625// 2
+    for i in range(0, 10):  # 5625// 2
         #i=0
         #while score_sorted[0,i]>0.999:
         x_min = int(roi_sorted[i][0])
@@ -651,6 +659,8 @@ if __name__ == '__main__':
     
     plt.imshow(img_.astype(int))
     plt.show()
+    
+    RPN.save("img202_ij_indexing.h5")
         
         
         

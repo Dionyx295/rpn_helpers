@@ -123,7 +123,7 @@ class DataGenerator(Sequence):
         # generate all the ordered pair of x and y center
         
         # to achive this, we will use meshgrid and reshape it
-        center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='xy')).T.reshape(-1,2)
+        center_list = np.array(np.meshgrid(x_center, y_center,  sparse=False, indexing='ij')).T.reshape(-1,2)
         
         # visualizing the anchor positions
         """
@@ -539,13 +539,13 @@ def init_gen(dir_path, load_fm=False):
     
     t=time.perf_counter()
     list_img=[]
-    for path in list_img_path[:1]:
+    for path in list_img_path:
         list_img.append(cv2.imread(path))
     print("len list img",len(list_img),time.perf_counter()-t,"s")
     
     t=time.perf_counter()
     list_bboxes=[]
-    for path in list_json_path[:1]:
+    for path in list_json_path:
         with open(path,'r') as file:
           list_bboxes.append(json.load(file))
     
@@ -573,12 +573,12 @@ def init_gen(dir_path, load_fm=False):
     
 if __name__ == '__main__':
     # path to training images (with bbox folder)
-    dir_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\nice_charb\\"
+    dir_path="./data/train/"
     
-    gen=init_gen(dir_path,load_fm=False)
+    gen=init_gen(dir_path,load_fm=True)
     
     # path to validation images (with bbox folder)
-    dir_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\nice_charb_val\\"
+    dir_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\rpn_data_val\\"
     
     #val_gen=init_gen(dir_path,load_fm=False)
     
@@ -591,6 +591,7 @@ if __name__ == '__main__':
     conv1 = Conv2D(512,
                    kernel_size= 3,
                    padding= "same",
+                   name="conv1",
                    kernel_initializer=initializers.RandomNormal(stddev=0.01),
                    bias_initializer=initializers.Zeros())(input_) # (kw * iw + 2*padding_w / s_w) + 1
     
@@ -619,7 +620,7 @@ if __name__ == '__main__':
     #                              custom_objects={'custom_l1_loss':custom_l1_loss,'custom_binary_loss':custom_binary_loss})
     
     #create callback
-    filepath = 'rpn_val_nice_charb.h5' # best model on validation data
+    filepath = 'model\\rpn_data_val.h5' # best model on validation data
     checkpoint = ModelCheckpoint(filepath=filepath, 
                                  monitor='val_loss',
                                  verbose=1, 
@@ -656,7 +657,7 @@ if __name__ == '__main__':
     plt.plot(history.history["val_objectivess_score_loss"])
     plt.show()
     #"""
-    RPN.save("rpn_120_nice_charb_all.h5") # last model
+    RPN.save("model\\rpn_model.h5") # last model
     
     
     #"""
