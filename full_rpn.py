@@ -213,7 +213,7 @@ def custom_binary_loss(y_true, y_pred_objectiveness):
 
 #%%main    
 if __name__ == '__main__':
-    folder_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
+    folder_path="./data/train" #"C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
     json_path = os.path.join(folder_path,"bbox")
     
     #%% Load the image 
@@ -660,7 +660,7 @@ if __name__ == '__main__':
     plt.imshow(img_.astype(int))
     plt.show()
     
-    RPN.save("img202_ij_indexing.h5")
+    #RPN.save("img202_ij_indexing.h5")
         
         
         
