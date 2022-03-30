@@ -208,13 +208,12 @@ def get_anchor_list(img_w,img_h,w_feature_map,h_feature_map):
     """
     return anchor_list
 
-folder_path="data\\test\\"#"C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
-
+folder_path="data\\test\\"
 json_path = os.path.join(folder_path,"bbox")
 
 
-img_name='LRM_tot_clem_203.tif'
-model_name=".\\model\\rpn_model.h5"#"rpn_10im_800x800_40e_nice.h5"
+img_name='LRM_tot_clem_184.tif'
+model_name=".\\model\\rpn_model.h5"
 bbox_conf_threshold=0.95
 
 json_name=img_name.split('.')[0]+".json"
@@ -237,6 +236,7 @@ plt.show()
 with open(os.path.join(json_path,json_name),'r') as file:
     bbox_list = json.load(file)
 print("bbox_list",bbox_list)
+
 # visualize ground truth box
 img_ = np.copy(img)
 for i, bbox in enumerate(bbox_list):
@@ -270,6 +270,15 @@ RPN = keras.models.load_model(model_name, compile=False)
 
 # get the offset and objectiveness score
 anchor_deltas, objectiveness_score = RPN.predict(feature_maps)
+
+# get featuremap of objectiveness layer (can be seen as heat map)
+first_conv=RPN.get_layer("conv1")
+obj_conv=RPN.get_layer("objectivess_score")
+x1=first_conv(feature_maps)
+x2=obj_conv(x1)
+plt.title("heat map")
+plt.imshow(x2[0,:,:,0])
+plt.show()
 
 
 # shape both predictions
@@ -364,5 +373,3 @@ while i < stop:
     
 plt.imshow(img_)
 plt.show()
-
-#pistes : verifier que le shuffle fonctionne bien + passe de 800x800 a 4 400x400
