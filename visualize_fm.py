@@ -12,10 +12,11 @@ from matplotlib import pyplot as plt
 import json
 import os
 
-# absolute path to an image directory
-dir_path="C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
+# script that use a training image (lidar image + bbox json file) to see if the feature maps returned by VGG contain high activation value on our objects
 
-img_name="LRM_tot_clem_56.tif"
+# path to an image directory
+dir_path="data\\train\\"
+img_name="LRM_tot_clem_184.tif"
 json_name=img_name.replace(".tif",".json")
 
 img_path=os.path.join(dir_path, img_name)
@@ -55,7 +56,7 @@ for bbox in bboxes:
 plt.imshow(img_.astype(int), cmap="gray")
 plt.show()
 
-""" # if you want to compute the fm
+""" # if you want to compute the fm (and not load them form json file)
 vgg = keras.applications.VGG16(
     include_top=False,
     weights="imagenet"
@@ -72,6 +73,7 @@ fm=np.array(fm)
 
 print("fm shape", fm.shape)
 
+""" # I used this part of the script to try to find wich channels were always activ on our charcoal kilns
 l=[18,44,172,221,248,278,357,402,419,454,459,495,502]
 s=[18]
 activ_on_104=[4, 15, 33, 34, 36, 44, 45, 55, 58, 64, 76, 84, 89, 94, 98, 103, 109, 117, 118, 124, 149, 155, 160, 163, 172, 174, 179, 185, 186, 188, 194, 199, 201, 207, 223, 227, 240, 248, 258, 259, 261, 272, 284, 298, 306, 315, 319, 325, 335, 341, 343, 344, 345, 351, 356, 357, 367, 369, 373, 381, 387, 400, 409, 410, 414, 416, 417, 430, 431, 441, 450, 452, 454, 458, 459, 462, 463, 471, 486, 488, 491, 495, 496, 502, 504, 505, 506, 510]
@@ -88,12 +90,13 @@ for a in activ_on_56:
         count+=1
         temp.append(a)
 print(count,temp)
+#"""
 
 count=0
 activ_channels=[]
 value=[]
 
-for i in temp:
+for i in range(512):
     if np.max(fm[0,:,:,i])==0:
         count+=1
     

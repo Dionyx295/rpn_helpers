@@ -12,11 +12,11 @@ import numpy as np
 from tensorflow import keras
 from tensorflow.keras.models import Model
 
+# script used to analyse the feature maps inside the RPN
 
-dir_path="data\\train"#C:\\Users\\Jean-Malo\\Documents\\Polytech\\5A\\PRD_LiDAR\\test_scripts\\data_test\\LRMdataset\\img"
-
+dir_path="data\\train"
 img_name="LRM_tot_clem_202.tif"
-model_name="model\\rpn_model.h5"#"rpn_10im_800x800_40e_nice.h5"
+model_name="model\\rpn_model.h5"
 json_name=img_name.replace(".tif",".json")
 
 img_path=os.path.join(dir_path, img_name)
@@ -79,14 +79,12 @@ RPN.summary()
 first_conv=RPN.get_layer("conv1")
 obj_conv=RPN.get_layer("objectivess_score")
 
+
+# featuremaps after the first convolution layer
 x=first_conv(feature_maps)
 print(x.shape)
 
-"""
-print(first_conv_output.shape)
-print(first_conv_output[1,1,1])
-"""
-
+# define how you want to browse those featuremaps
 for i in range(3):
     print("img", i)
     #plt.subplot(121)
@@ -102,6 +100,9 @@ for i in range(3):
     if a=="exit":
         break
     """
+    
+# featuremaps after the objectiveness layer 
+# can be seen as heat map of the prédiction
 x=obj_conv(x)
 print(x.shape)
 
@@ -109,4 +110,6 @@ img_=np.copy(x[0,:,:,0])
 plt.imshow(img_)
 plt.show()
 
-print(np.max(img_))
+print("max activation :",np.max(img_))
+
+# i didn't show the featuremaps from the delta layer because they can't be represented as images as the predictions correspond to set of values
