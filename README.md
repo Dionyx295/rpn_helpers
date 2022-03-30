@@ -10,6 +10,8 @@ The needed environnement can be installed with the command ```pip install -r req
 
 It's better to do it in a specialised virtual environnement : ```python -m venv rpn``` will create a virtual environnement called rpn.
 
+full_rpn.py can be directly launch to see if the environnemnt installation is successfull. Also, it depends on your IDE but for me i had to use ```%matplotlib inline``` to nicely see each graph without the popup interrupting the execution.
+
 ## seg_to_bbox.py
 Region Proposal Network use bounding boxes, but that data i had was for segmentation : each LiDAR image was associated with a mask. So i used this script to transform mask into list of bounding boxes. The mask image should have a white background and the object should be black. For each image a list of bbox is generated using connected component algorithm, this list is saved in a json file with the same base name as the image. All the json files are saved in a directory named bbox (created in the directory containing the masks).
 The directory containing the images should be given directly in the code. (i used absolute link)
