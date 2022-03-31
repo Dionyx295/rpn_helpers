@@ -42,6 +42,10 @@ It's an adaptation of the notebook in a .py file, that use one LiDAR image for t
 ## rpn_train.py
 The goal of this script is to use multiple images to train the RPN (using keras data_generator). The input should be an image directory containing a bbox directory (as defined in the seg_to_bbox.py part). RPN transform each image into feature maps using a backbone network (here vgg16, pretrained on imagenet), this operations is quite long so you can give a precomputed feature map folder (same principle as the bbox directory). See img_to_featuremap.py for more info. This script can use validation data (even if not really efficient on my charcoal kiln data). You have to define manually the name of the saved model, it will be saved in the model directory. You can also reload a model befor starting the training. Be careful this script can use a lot of memormy if you give a folder with a lot of images (i have a computer with 8GB of RAM, and when running with 800 LiDAR images i lose 10GB of memory on my SSD, rebbooting my computer gives me back my 10GB)
 
+## rpn_predict.py
+
+Used to load a model saved by rpn_train.py and predict a given image (image name needs to be specified directly in the code). 
+
 ## img_to_featuremap.py
 Take in input an image directory, each image is passed to vgg16 convolution layers, the result is saved as json file (same base name as the image) in a featuremap directory (created in the image directory). This allow a quicker training time (3s to compute vs 0.5 to read). Your image directory should be like this :
 ```
