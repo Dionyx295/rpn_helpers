@@ -208,11 +208,11 @@ def get_anchor_list(img_w,img_h,w_feature_map,h_feature_map):
     """
     return anchor_list
 
-folder_path="data\\test\\"
+folder_path="data\\train\\"#"data\\test\\"
 json_path = os.path.join(folder_path,"bbox")
 
 
-img_name='LRM_tot_clem_184.tif'
+img_name='LRM_tot_clem_202.tif'#'LRM_tot_clem_203.tif'
 model_name=".\\model\\rpn_model.h5"
 bbox_conf_threshold=0.95
 

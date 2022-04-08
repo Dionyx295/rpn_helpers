@@ -630,7 +630,7 @@ if __name__ == '__main__':
     
     # if you don't want to use validation data, comment the two last param
     history = RPN.fit_generator(gen, 
-                                epochs=100)#,
+                                epochs=40)#,
     #                            callbacks=callbacks, validation_data=val_gen)
     
     plt.subplot(131)
